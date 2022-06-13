@@ -19,6 +19,11 @@ function setup(){ // todas as configuraçoes dos objetos
 
 
   // pl
+  pl=createSprite(30,434,20,20)
+  pl.addImage(plimg)
+  pl.scale=0.4
+  pl.visible=false
+
 }
 
 function draw(){
@@ -52,8 +57,20 @@ function inicio (){
 
 
 function jogar (){
-
- 
+  pl.visible=true
+  if(keyIsDown(UP_ARROW)){
+pl.y--
+  }
+  if(keyIsDown(DOWN_ARROW)){
+    pl.y++
+      }
+      if(keyIsDown(LEFT_ARROW)){
+        pl.x--
+          }
+          if(keyIsDown(RIGHT_ARROW)){
+            pl.x++
+              }
+              algas()
   bg.velocityX = -2
   if(bg.x < 0){
     bg.x=width/2
@@ -61,3 +78,9 @@ function jogar (){
 
 }
  
+function algas(){
+  if(frameCount%80===0){
+var alga = createSprite(700,460,20,20)
+alga.velocityX=-1
+  }
+}
