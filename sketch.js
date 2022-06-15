@@ -4,7 +4,8 @@ var estado = "inicio";
 var pl, plimg;
 var alg1, alg2, alg3, alg4, cr1, cr2,cr3;
 var pred1, pred2, pred3, pred4, pred5, pred6
-
+var pontuacao=0
+var vida=5
 function preload(){ // função que carregar todas as imagens e animações
   bk1 = loadImage("assets/bg1.webp");
   plimg = loadImage("assets/pl.png");
@@ -79,8 +80,17 @@ function jogar (){
   controles();
   algas();
   predadores ();
+  stroke("purple")
+  strokeWeight(5)
+  textFont("Koulen");
+  fill ("LightPink")
+  textSize(20)
+  text ("pontuação:"+pontuacao,520,15)
+  text ("vida:"+vida,520,35)
+for(var i=0;i<5;i++){
+  image(plimg,(580+(i*22)),26,20,20)
 }
- 
+}
 function algas(){
   if(frameCount%55===0){
     var alga = createSprite(708,460,20,20)
@@ -112,9 +122,25 @@ function algas(){
 
 function predadores (){
   if (frameCount%100 === 0){
-    var pred = createSprite (708,random(10,480),20,20)
+    var pred = createSprite (708,random(10,395),20,20)
     pred.velocityX = -1
-    pred.lifetime = 750
+    pred.lifetime = 800
+    var r= Math.round(random(1,6))
+    switch(r){
+case 1:pred.addImage(pred1)
+break
+case 2:pred.addImage(pred2)
+break
+case 3:pred.addImage(pred3)
+break
+case 4:pred.addImage(pred4)
+break
+case 5:pred.addImage(pred5)
+break
+case 6:pred.addImage(pred6)
+break
+
+    }
   }
 }
 
