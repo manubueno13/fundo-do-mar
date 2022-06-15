@@ -2,10 +2,28 @@ var bk1, bk2
 var bg;
 var estado = "inicio";
 var pl, plimg;
+var alg1, alg2, alg3, alg4, cr1, cr2,cr3;
+var pred1, pred2, pred3, pred4, pred5, pred6
 
 function preload(){ // função que carregar todas as imagens e animações
-  bk1 = loadImage("assets/bg1.webp")
-  plimg = loadImage("assets/pl.png")
+  bk1 = loadImage("assets/bg1.webp");
+  plimg = loadImage("assets/pl.png");
+  //algas e corais
+  alg1 =loadImage ("assets/alg1.png");
+  alg2 =loadImage ("assets/alg2.png");
+  alg3 =loadImage ("assets/alg3.png");
+  alg4 =loadImage ("assets/alg4.png");
+  cr1 = loadImage ("assets/crl1.png");
+  cr2 = loadImage ("assets/crl2.png");
+  cr3 = loadImage ("assets/crl3.png");
+  //predadores
+  pred1 =loadImage ("assets/pred1.png");
+  pred2 =loadImage ("assets/pred2.png");
+  pred3 =loadImage ("assets/pred3.png");
+  pred4 =loadImage ("assets/pred4.png");
+  pred5 =loadImage ("assets/pred5.png");
+  pred6 =loadImage ("assets/pred6.png");
+
 }
 
 function setup(){ // todas as configuraçoes dos objetos
@@ -57,30 +75,60 @@ function inicio (){
 
 
 function jogar (){
-  pl.visible=true
-  if(keyIsDown(UP_ARROW)){
-pl.y--
-  }
-  if(keyIsDown(DOWN_ARROW)){
-    pl.y++
-      }
-      if(keyIsDown(LEFT_ARROW)){
-        pl.x--
-          }
-          if(keyIsDown(RIGHT_ARROW)){
-            pl.x++
-              }
-              algas()
-  bg.velocityX = -2
-  if(bg.x < 0){
-    bg.x=width/2
-  }
-
+  pl.visible=true;
+  controles();
+  algas();
+  predadores ();
 }
  
 function algas(){
-  if(frameCount%80===0){
-var alga = createSprite(700,460,20,20)
-alga.velocityX=-1
+  if(frameCount%55===0){
+    var alga = createSprite(708,460,20,20)
+    alga.velocityX=-2
+    alga.lifetime = 750
+    alga.scale = 1
+    var r = Math.round(random(1,7))
+    switch (r) {
+      case 1: alga.addImage(alg3)
+        break;
+        case 2: alga.addImage(alg3)
+        break;
+        case 3: alga.addImage(alg3)
+        break;
+        case 4: alga.addImage(alg4)
+        break;
+        case 5: alga.addImage(cr2)
+                alga.scale = 0.7
+        break;
+        case 6: alga.addImage(cr2)
+                alga.scale = 0.7
+        break;
+        case 7: alga.addImage(cr3)
+                alga.scale = 0.5
+        break;
+    }
+  }
+}
+
+function predadores (){
+  if (frameCount%100 === 0){
+    var pred = createSprite (708,random(10,480),20,20)
+    pred.velocityX = -1
+    pred.lifetime = 750
+  }
+}
+
+function controles(){
+  if(keyIsDown(UP_ARROW)){
+    pl.y--
+  }
+  if(keyIsDown(DOWN_ARROW)){
+    pl.y++
+  }
+  if(keyIsDown(LEFT_ARROW)){
+    pl.x--
+  }
+  if(keyIsDown(RIGHT_ARROW)){
+    pl.x++
   }
 }
