@@ -65,7 +65,7 @@ function draw(){
   }else if (estado === "jogar"){
     jogar ()
   }else if (estado === "fim"){
-   // gameOver()
+    gameOver()
   }
   text(mouseX + ", " + mouseY, mouseX, mouseY)
 }
@@ -103,10 +103,28 @@ function jogar (){
   }
   
   //colisão
- 
+ if (pl.isTouching(gpalgas)||pl.isTouching(gppred)){
+if (vida>0){
+vida=vida-1
+pl.x=55
+pl.y=267
+}
+else{
+estado="fim"
+}
+ }
   
 }
-
+function gameOver(){
+gpalgas.destroyEach()
+gppred.destroyEach()
+stroke("purple")
+  strokeWeight(5)
+  textFont("Koulen");
+  fill ("LightPink")
+  textSize(60)
+  text("Game Over", 245,120)
+}
 function algas(){
   if(frameCount%55===0){
     var alga = createSprite(708,460,20,20)
