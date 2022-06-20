@@ -1,11 +1,14 @@
-var bk1, bk2
+var bk1, bk2;
 var bg;
 var estado = "inicio";
 var pl, plimg;
 var alg1, alg2, alg3, alg4, cr1, cr2,cr3;
-var pred1, pred2, pred3, pred4, pred5, pred6
-var pontuacao=0
-var vida=5
+var pred1, pred2, pred3, pred4, pred5, pred6;
+var pontuacao=0;
+var vida=5;
+var gpalgas, gppred, bolhas;
+var pl1, pl2, pl3;
+
 function preload(){ // função que carregar todas as imagens e animações
   bk1 = loadImage("assets/bg1.webp");
   plimg = loadImage("assets/pl.png");
@@ -25,6 +28,12 @@ function preload(){ // função que carregar todas as imagens e animações
   pred5 =loadImage ("assets/pred5.png");
   pred6 =loadImage ("assets/pred6.png");
 
+  bolhas = loadImage("assets/bl.png")
+  //planctons
+  pl1 = loadImage("assets/pl1.png")
+  pl2 = loadImage("assets/pl2.png")
+  pl3 = loadImage("assets/pl3.png")
+
 }
 
 function setup(){ // todas as configuraçoes dos objetos
@@ -36,12 +45,14 @@ function setup(){ // todas as configuraçoes dos objetos
   bg = createSprite(350,490,1400,50)
   bg.shapeColor = "NavajoWhite"
 
-
   // pl
   pl=createSprite(30,434,20,20)
   pl.addImage(plimg)
   pl.scale=0.4
   pl.visible=false
+
+  gpalgas = new Group();
+  gppred = new Group ()
 
 }
 
@@ -54,13 +65,12 @@ function draw(){
   }else if (estado === "jogar"){
     jogar ()
   }else if (estado === "fim"){
-
+   // gameOver()
   }
   text(mouseX + ", " + mouseY, mouseX, mouseY)
 }
 
 function inicio (){
-
   stroke("purple")
   strokeWeight(5)
   textFont("Koulen");
@@ -74,12 +84,13 @@ function inicio (){
   }
 }
 
-
 function jogar (){
   pl.visible=true;
   controles();
   algas();
   predadores ();
+  bolha();
+  // pontuação:
   stroke("purple")
   strokeWeight(5)
   textFont("Koulen");
@@ -87,10 +98,15 @@ function jogar (){
   textSize(20)
   text ("pontuação:"+pontuacao,520,15)
   text ("vida:"+vida,520,35)
-for(var i=0;i<5;i++){
-  image(plimg,(580+(i*22)),26,20,20)
+  for(var i=0;i<vida;i++){
+    image(plimg,(580+(i*22)),26,20,20)
+  }
+  
+  //colisão
+ 
+  
 }
-}
+
 function algas(){
   if(frameCount%55===0){
     var alga = createSprite(708,460,20,20)
@@ -117,6 +133,10 @@ function algas(){
                 alga.scale = 0.5
         break;
     }
+
+    gpalgas.add (alga)
+    alga.debug = true
+    alga.setCollider("circle", 0,0,40)
   }
 }
 
@@ -127,34 +147,54 @@ function predadores (){
     pred.lifetime = 800
     var r= Math.round(random(1,6))
     switch(r){
-case 1:pred.addImage(pred1)
-break
-case 2:pred.addImage(pred2)
-break
-case 3:pred.addImage(pred3)
-break
-case 4:pred.addImage(pred4)
-break
-case 5:pred.addImage(pred5)
-break
-case 6:pred.addImage(pred6)
-break
-
+      case 1:pred.addImage(pred1)
+             pred.setCollider("circle", 0,0,40)
+      break
+      case 2:pred.addImage(pred2)
+             pred.setCollider("circle", 0,0,65)
+      break
+      case 3:pred.addImage(pred3)
+             pred.setCollider("circle", 0,0,40)
+      break
+      case 4:pred.addImage(pred4)
+             pred.setCollider("circle", 0,0,40)
+      break
+      case 5:pred.addImage(pred5)
+             pred.setCollider("circle", 0,0,50)
+      break
+      case 6:pred.addImage(pred6)
+             pred.setCollider("circle", 0,0,50)
+      break
     }
+
+    gppred.add (pred)
+    pred.debug=true
+   
+  }
+}
+
+function bolha(){
+  if (frameCount%50 === 0){
+    var bl = createSprite (random(10,650),random(10,450),20,20)
+    bl.velocityY = -1
+    bl.lifetime = 550
+    bl.scale = 0.5
+    bl.addImage(bolhas)
+
   }
 }
 
 function controles(){
   if(keyIsDown(UP_ARROW)){
-    pl.y--
+    pl.y-=3
   }
   if(keyIsDown(DOWN_ARROW)){
-    pl.y++
+    pl.y+=3
   }
   if(keyIsDown(LEFT_ARROW)){
-    pl.x--
+    pl.x-=3
   }
   if(keyIsDown(RIGHT_ARROW)){
-    pl.x++
+    pl.x+=3
   }
 }
