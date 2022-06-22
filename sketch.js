@@ -8,7 +8,8 @@ var pontuacao=0;
 var vida=5;
 var gpalgas, gppred, bolhas;
 var pl1, pl2, pl3;
-
+var gpplanc
+var vl=1
 function preload(){ // função que carregar todas as imagens e animações
   bk1 = loadImage("assets/bg1.webp");
   plimg = loadImage("assets/pl.png");
@@ -52,7 +53,8 @@ function setup(){ // todas as configuraçoes dos objetos
   pl.visible=false
 
   gpalgas = new Group();
-  gppred = new Group ()
+  gppred = new Group ();
+  gpplanc = new Group();
 
 }
 
@@ -90,6 +92,7 @@ function jogar (){
   algas();
   predadores ();
   bolha();
+  planctons();
   // pontuação:
   stroke("purple")
   strokeWeight(5)
@@ -101,7 +104,16 @@ function jogar (){
   for(var i=0;i<vida;i++){
     image(plimg,(580+(i*22)),26,20,20)
   }
-  
+  pl.overlap(gpplanc,function(coletor,coletado){
+    pontuacao++
+    coletado.remove()
+  })
+  if (pontuacao===2){
+pontuacao=0
+vida++
+vl++
+gppred.setVelocityXEach(-vl)
+  }
   //colisão
  if (pl.isTouching(gpalgas)||pl.isTouching(gppred)){
 if (vida>0){
@@ -124,6 +136,24 @@ stroke("purple")
   fill ("LightPink")
   textSize(60)
   text("Game Over", 245,120)
+}
+function planctons(){
+  if(frameCount%65===0){
+    var planc = createSprite(708,random(0,500),20,20)
+   planc.velocityX=-2
+   planc.lifetime=400
+   var k = Math.round(random(1,3))
+   switch (k) {
+    case 1: planc.addImage(pl1)
+      break;
+      case 2: planc.addImage(pl2)
+      break;
+      case 3: planc.addImage(pl3)
+      break;
+   }
+   planc.scale=0.11
+   gpplanc.add(planc)
+  }
 }
 function algas(){
   if(frameCount%55===0){
@@ -161,7 +191,7 @@ function algas(){
 function predadores (){
   if (frameCount%100 === 0){
     var pred = createSprite (708,random(10,395),20,20)
-    pred.velocityX = -1
+    pred.velocityX = -vl
     pred.lifetime = 800
     var r= Math.round(random(1,6))
     switch(r){
